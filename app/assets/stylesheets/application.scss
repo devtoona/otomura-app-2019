@@ -1,0 +1,78 @@
+/*
+* This is a manifest file that'll be compiled into application.css, which will include all the files
+* listed below.
+*
+* Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+* or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+*
+* You're free to add application-wide styles to this file and they'll appear at the bottom of the
+* compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+* files in this directory. Styles in this file should be added after the last require_* statement.
+* It is generally better to create a new file per style scope.
+*
+*= require_tree .
+*= require_self
+*/
+
+html, body,
+ul, ol, li,
+h1, h2, h3, h4, h5, h6, p, div {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+body{
+  font-family: "游ゴシック体", YuGothic, "游ゴシック Medium", "Yu Gothic Medium", "游ゴシック", "Yu Gothic", sans-serif;
+  width:100%;
+  background-color:rgba(200,200,200,0.2);
+  text-align:justify;
+  min-height:100%;
+  -webkit-font-smoothing: antialiased;
+  overflow-y: scroll;
+}
+
+.table{
+  padding-top:150px;
+}
+
+:link{
+  text-decoration: none;
+  color:rgb(105,105,105);
+}
+
+:visited{
+  text-decoration: none;
+  color:rgb(105,105,105);
+}
+
+.main {
+  width: 100%;
+}
+
+.main-container {
+  padding:50px 20px;
+  margin:0 auto;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+@media(max-width:750px){
+  .main-container {
+    padding:50px 0px;
+    margin:0 auto;
+    overflow:hidden;
+  }
+}
+
+@import "font-awesome-sprockets";
+@import "font-awesome";

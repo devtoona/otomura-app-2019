@@ -1,0 +1,13 @@
+<div class="responsive-index-userlist-container">
+    <div class="index-userlist-header">
+      <h3>ユーザ一覧</h3>
+    </div>
+
+    <div class="index-userlists-container">
+      <div class="index-userlists">
+        <%  @serch_users.first(10).each do |recomended_user| %>
+        <%= render partial: 'recomended_user_reply_btn',locals: {recomended_user:recomended_user} %>
+        <% end %>
+      </div>
+    </div>
+  </div>

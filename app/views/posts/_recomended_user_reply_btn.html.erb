@@ -1,0 +1,17 @@
+<div class="index-userlist-content">
+  <div class="index-userlist-image">
+    <%=link_to image_tag(recomended_user.image.url),"/profile/#{recomended_user.public_uid}"%>
+  </div>
+
+  <div class="index-userlist-name">
+    <%= link_to(recomended_user.name,"/profile/#{recomended_user.public_uid}")%>
+  </div>
+
+  <div class="index-userlist-id">
+    <%= link_to("@#{recomended_user.public_uid}","/profile/#{recomended_user.public_uid}") %>
+  </div>
+
+<div id="follow_buttons_<%= recomended_user.id %>" class="index-follow-btn-container">
+  <%= render partial: 'follow/follow_btn',locals: {recomended_user: recomended_user} %>
+</div>
+</div>

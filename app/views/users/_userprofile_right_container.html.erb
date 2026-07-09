@@ -1,0 +1,17 @@
+<div class="userprofile-right-containers">
+  <div class="userprofile-right-container">
+    <div class="userprofile-userlist-header">
+      <h3>ユーザ一覧</h3>
+    </div>
+
+    <div class="userprofile-userlist-content-container">
+      <% @serch_users.first(10).each do |recomended_user| %>
+      <%= render partial: 'posts/recomended_user_reply_btn',locals: {recomended_user:recomended_user} %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="show-profile-koukoku-container">
+    <%= image_tag 'test_koukoku.png' %>
+  </div>
+</div>

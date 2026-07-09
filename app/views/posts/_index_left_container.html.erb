@@ -1,0 +1,35 @@
+<div class="index-profile-containers">
+  <div class="index-profile-container">
+    <div class="index-user-background">
+      <%=link_to image_tag(@current_user.background.url),"/profile/#{@current_user.public_uid}"%>
+    </div>
+    <div class="index-user-image">
+      <%=link_to image_tag(@current_user.image.url),"/profile/#{@current_user.public_uid}"%>
+    </div>
+
+    <div class="index-user-name">
+      <%= link_to(@current_user.name,"/profile/#{@current_user.public_uid}")%>
+    </div>
+
+    <div class="index-user-id">
+      <%= link_to("@#{@current_user.public_uid}","/profile/#{@current_user.public_uid}")%>
+    </div>
+
+    <div class="index-user-content">
+      <li class="index-connects"><%= link_to("/connect/#{@current_user.public_uid}") do%>
+        コネクト<br>
+        <%= @follow.count %>
+        <% end %>
+      </li>
+      <li class="index-connecteds"><%= link_to("/connected/#{@current_user.public_uid}") do%>
+        コネクター<br>
+        <%= @follower.count %>
+        <% end %>
+      </li>
+    </div>
+  </div>
+
+  <div class="index-profile-koukoku-container">
+    <%= image_tag 'test_koukoku.png' %>
+  </div>
+</div>

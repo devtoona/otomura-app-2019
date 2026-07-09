@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+  <% if user_signed_in? %>
+  <% if request.fullpath=="/posts/index"%>
+  <title>投稿一覧 / OTOMURA</title>
+
+  <% elsif request.fullpath=="/posts/show/:id" %>
+  <title>スレッド詳細 / OTOMURA</title>
+
+  <% elsif request.fullpath=="/users/notice/#{@current_user.public_uid}" %>
+  <title>通知 / OTOMURA</title>
+
+  <% elsif request.fullpath=="/search" %>
+  <title>検索 / OTOMURA</title>
+
+  <% elsif request.fullpath=="/search/#{@current_user.public_uid}/users" || request.fullpath=="/search/#{@current_user.public_uid}/posts" %>
+  <title>検索結果 / OTOMURA</title>
+
+  <% elsif request.fullpath=="/profile/#{@current_user.public_uid}" %>
+  <title><%= @current_user.name %>さんのプロフィール / OTOMURA</title>
+
+  <% elsif request.fullpath=="/connect/#{@current_user.public_uid}" %>
+  <title><%= @current_user.name %>さんのコネクト / OTOMURA</title>
+
+  <% elsif request.fullpath=="/connected/#{@current_user.public_uid}" %>
+  <title><%= @current_user.name %>さんのコネクター / OTOMURA</title>
+
+  <% elsif request.fullpath=="/media/#{@current_user.public_uid}" %>
+  <title><%= @current_user.name %>さんのメディア / OTOMURA</title>
+
+  <% elsif request.fullpath=="/like/#{@current_user.public_uid}" %>
+  <title><%= @current_user.name %>さんのいいね / OTOMURA</title>
+
+  <% elsif request.fullpath=="/users/edit" %>
+  <title><%= @current_user.name %>アカウント編集 / OTOMURA</title>
+
+  <% else %>
+  <title>OTOMURA</title>
+  <% end %>
+
+  <% else %>
+  <% if request.fullpath=="/" || request.fullpath=="/users/sign_in" %>
+  <title>ログイン / OTOMURA</title>
+
+  <% elsif request.fullpath=="/users/password/new" %>
+  <title>パスワード編集 / OTOMURA</title>
+
+  <% elsif request.fullpath=="/users/sign_up" %>
+  <title>新規登録 / OTOMURA</title>
+  <% end %>
+  <% end %>
+
+  <%= csrf_meta_tags %>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body>
+  <% if user_signed_in? %>
+  <div class="index-header">
+    <div class="index-header-container">
+      <div class="index-header-list-container">
+        <div class="index-header-list">
+          <ul>
+            <% if request.fullpath=="/posts/index"%>
+            <li class="index-header-menu-fixed-1"><%= link_to("/posts/index") do %>
+              <%= icon 'fas','home',class:"fa-home" %>
+              <% end %>
+            </li>
+            <% else %>
+            <li class="index-header-menu-1"><%= link_to("/posts/index") do %>
+              <%= icon 'fas','home',class:"fa-home" %>
+              <% end %>
+            </li>
+            <% end %>
+
+            <% if request.fullpath=="/users/notice/#{@current_user.public_uid}" %>
+            <li class="index-header-menu-fixed-2"><%= link_to("/users/notice/#{@current_user.public_uid}") do %>
+              <%= icon 'fas','bell',class:"fa-notice" %>
+              <% end %>
+            </li>
+            <% else %>
+            <li id="index-notice-header" class="index-header-menu-2">
+              <%= link_to("/users/notice/#{@current_user.public_uid}") do %>
+              <%= icon 'fas','bell',class:"fa-notice" %>
+              <% if @self_user_notice.first %>
+              <%= icon 'fas','flag-checkered',class:"fa-checked" %>
+              <div class="notices-count"><%= "#{@notices_count}件" %></div>
+              <% end %>
+              <% end %>
+            </li>
+            <% end %>
+
+            <% if request.fullpath=="/search"%>
+            <li class="index-header-menu-fixed-3">
+              <%= link_to("/search") do %>
+              <%=icon 'fas','search',class:"fa-serch" %>
+              <% end %>
+            </li>
+
+            <% else %>
+            <li class="index-header-menu-3">
+              <%= link_to("/search") do %>
+              <%= icon 'fas','search',class:"fa-serch" %>
+              <% end %>
+            </li>
+            <% end %>
+
+            <li class="index-header-menu-4"><%= link_to(destroy_user_session_path,method: :delete) do %>
+              <%= icon 'fas','door-open',class:"fa-door" %>
+              <% end %>
+            </li>
+
+            <li class="index-header-mypage-container"><%= link_to("/profile/#{@current_user.public_uid}") do %>
+              <div class="mypage-link-font">My Page</div>
+              <div class="index-header-mypage">
+                <%= image_tag(@current_user.image.url) %>
+                <% end %>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="header-logo-container">
+        <div id="header-logo" class="index-header-logo">OTOMURA</div>
+      </div>
+
+      <div id="header-menu-btn" class="header-menu-bar-container"><%= icon 'fas','bars',class:"header-menu-bar"%></div>
+
+      <div id="newpost-form-show" class="index-newpost-icon"><%= icon 'fas','pen-fancy',class:"fa-pen-fancy"%></div>
+
+    </div>
+  </div>
+
+  <% if flash[:notice] %>
+  <div id="notice-modal" class="notice-modal-wrapper">
+    <div id="notice" class="notice-header">
+      <div class="notice-content">
+        <%= render partial: 'posts/flash' %>
+      </div>
+      <div id="notice-ok-btn" class="notice-ok-btn-css">
+        OK
+      </div>
+    </div>
+  </div>
+  <% end %>
+
+  <div id=notice-js class="notice-header-js">投稿が完了しました！</div>
+  <% end %>
+
+  <script>
+    <% if @current_user %>
+    <% notice_user=Notice.find_by(checked: false,visited_id: @current_user.id) %>
+    <% if notice_user && notice_user.user_id!=@current_user.id  %>
+    $(function(){
+      var flag=0;
+      setInterval(function(){
+        if (flag==0){
+          $('#index-notice-header').css( 'background','rgba(200,200,200,0.3)');
+          $('.fa-notice').css( 'color','rgb(255,212,0)');
+          flag=1;
+        } else {
+          $('#index-notice-header').css( 'background','none');
+          $('.fa-notice').css( 'color','white');
+          flag=0;
+        }
+      },1000);
+    });
+    <% end %>
+    <% end %>
+
+    $(function(){
+      $('#newpost-form-show').click(function () {
+        $('#post-modal').show();
+      })
+
+      $('#notice-ok-btn').click(function(){
+        $('#notice-modal').hide();
+      })
+
+      $('#newpost-form-show').click(function () {
+        $('#post-modal').show();
+      }),
+
+      $(document).on('click', function(e) {
+        if($(e.target).is('#post-modal')) {
+          $('#new-post-destroy-modal').show();
+        }
+      })
+
+      $('#new-post-modal-yes-btn').click(function(){
+        $("#num").text("");
+        $('#post-modal').hide();
+        $('#list').after('<output id="list_new"></output>');
+        $('#list').remove();
+        $('#list_new').attr('id','list');
+        $('#new-post-content').val("");
+        $('#article_image_file_name').val("");
+        $('#post_video').val("");
+        $('#article_image_file_name_none').attr('id', 'article_image_file_name');
+        $('#image_file_label').css('color', 'rgba(10,180,80,0.7)');
+        $('#image_file_label').hover(function() {
+          $(this).css('color', 'rgba(120,200,80,1)');
+        }, function() {
+          $(this).css('color', 'rgba(10,180,80,0.7)');
+        })
+        $('#image_file_label').css('cursor','pointer');
+        $('#post_video_none').attr('id', 'post_video');
+        $('#video_file_label').css('color', 'rgba(10,180,80,0.7)');
+        $('#video_file_label').hover(function() {
+          $(this).css('color', 'rgba(120,200,80,1)');
+        }, function() {
+          $(this).css('color', 'rgba(10,180,80,0.7)');
+        })
+        $('#video_file_label').css('cursor','pointer');
+        $('#new-post-destroy-modal').hide();
+        $('#new-post-form-notice').css('display','none');
+        $('#new-post-form-notice-2').css('display','none');
+      })
+
+      $('#new-post-modal-no-btn').click(function(){
+        $('#new-post-destroy-modal').hide();
+      })
+
+      $('#post_cancel_btn').click(function(){
+        $('#new-post-destroy-modal').show();
+      })
+
+      $('#post-modal-no-btn').click(function(){
+        $('#post-modal').hide();
+        $('#list').after('<output id="list_new"></output>');
+        $('#list').remove();
+        $('#list_new').attr('id','list');
+        $('#article_image_file_name').val("");
+        $('#new-post-destroy-modal').hide();
+      })
+
+      $('#file-cancel-btn').click(function () {
+        $('#new-post-form-notice').css('display','none');
+        $('#new-post-form-notice-2').css('display','none');
+        $('#list').after('<output id="list_new"></output>');
+        $('#list').remove();
+        $('#list_new').attr('id','list');
+        $('#article_image_file_name_none').attr('id', 'article_image_file_name');
+        $('#image_file_label').css('color', 'rgba(10,180,80,0.7)');
+        $('#image_file_label').hover(function() {
+          $(this).css('color', 'rgba(120,200,80,1)');
+        }, function() {
+          $(this).css('color', 'rgba(10,180,80,0.7)');
+        })
+        $('#image_file_label').css('cursor','pointer');
+
+        $('#post_video_none').attr('id', 'post_video');
+        $('#article_image_file_name').val("");
+        $('#post_video').val("");
+        $('#video_file_label').css('color', 'rgba(10,180,80,0.7)');
+        $('#video_file_label').hover(function() {
+          $(this).css('color', 'rgba(120,200,80,1)');
+        }, function() {
+          $(this).css('color', 'rgba(10,180,80,0.7)');
+        })
+        $('#video_file_label').css('cursor','pointer');
+      })
+
+      $('#friendlist-friend-btn').click(function () {
+        $('#friend-modal').show();
+      }),
+
+      $(document).on('click', function(e) {
+        if($(e.target).is('#friend-modal')) {
+          $('#friend-modal').hide();
+        }
+      })
+
+      $('#friend-btn').click(function () {
+        $('#friend-modal').show();
+      }),
+
+      $(document).on('click', function(e) {
+        if($(e.target).is('#friend-modal')) {
+          $('#friend-modal').hide();
+        }
+      })
+
+      $('.modal-no-btn').click(function () {
+        $('#friend-modal').hide();
+      })
+
+      $('.close-modal').click(function () {
+        $('#post-modal').fadeOut();
+      })
+
+      $('#header-logo').click(function(){
+        $('html,body').animate({
+          'scrollTop':0
+        },500)
+      })
+    })
+  </script>
+
+  <%= yield %>
+
+  <% if user_signed_in? %>
+  <footer>
+    <div class="footer-container">
+      <div class="copyright">Copyright ©</div>
+      <div class="footer-logo">
+        <%= icon 'fas','guitar' %>
+      </div>
+
+      <div class="footer-menu">
+        <ul>
+          <% if @current_user %>
+          <li><%=link_to("アカウントの編集","/users/edit")%></li>
+          <% end %>
+          <li><%=link_to("お問い合わせ","https://docs.google.com/forms/d/1mgzMqxZbMJe3Pyiwgo-9NPX002kgZ68eD6iSUMTL4YY/edit")%></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+  <% end %>
+</body>
+</html>

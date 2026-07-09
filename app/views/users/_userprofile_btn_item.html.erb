@@ -1,0 +1,7 @@
+<% if @users.id!=@current_user.id %>
+<% if Follow.find_by(follow_id:@users.id,user_id: @current_user.id) %>
+<%= link_to("コネクト中","/follow/destroy/#{@users.public_uid}",class: "userprofile-follow-destroy-btn",method: :post) %>
+<% else %>
+<%= link_to("コネクト","/follow/create/#{@users.public_uid}",class: "userprofile-follow-create-btn",method: :post) %>
+<% end %>
+<% end %>
